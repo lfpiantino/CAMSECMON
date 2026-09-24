@@ -50,8 +50,6 @@ uvicorn app:app --host 127.0.0.1 --port 8000
 
 ## Configurar a câmera pelo painel (versão 2)
 
-Abra **Configuração da câmera**, preencha IP, porta RTSP (normalmente 554), usuário, senha e o caminho do stream `/cam/realmonitor?channel=1&subtype=0` indicado pela Intelbras. Clique **Testar conexão**; se receber resolução de imagem, clique **Salvar e iniciar**. A foto atual com linha vertical aparecerá logo abaixo. Ajuste a posição e o sentido de entrada, salve novamente e teste uma passagem real em cada direção.
+Abra **Configuração da câmera**, preencha IP, porta RTSP (normalmente 554), usuário, senha e o caminho do stream. Clique **Testar conexão**; se receber resolução de imagem, clique **Salvar e iniciar**. A foto atual com linha vertical aparecerá logo abaixo. Ajuste a posição e o sentido de entrada, salve novamente e teste uma passagem real em cada direção.
 
 Os ajustes ficam em `data/camera.json` no computador local, inclusive a senha em texto simples. Restrinja acesso à pasta e não inclua `data/` ao compartilhar o projeto. Para atualizar a versão anterior, substitua os arquivos do projeto e mantenha sua pasta `data/` dentro de `camsecmon`. Se preferir, renomeie sua pasta antiga `permanencia-mvp` para `camsecmon`, sem apagar `data/`. Pare e reinicie o servidor após substituir esses arquivos.
-
-Se o teste RTSP falhar, no PowerShell use `Test-NetConnection IP_DA_CAMERA -Port 554` para verificar a rede. Confira IP e porta nas configurações de rede do Mibo Smart; o computador deve alcançar a rede local da câmera. A opção de caminho aceita `?` e `&`. Não compartilhe capturas mostrando a chave de acesso.

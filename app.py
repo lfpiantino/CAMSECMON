@@ -10,10 +10,6 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote
 
-# A câmera Mibo aceita RTSP sobre TCP; o OpenCV/FFmpeg usa esta opção ao abrir
-# cada captura. Uma configuração explícita do usuário continua tendo prioridade.
-os.environ.setdefault('OPENCV_FFMPEG_CAPTURE_OPTIONS', 'rtsp_transport;tcp')
-
 import cv2
 import numpy as np
 from fastapi import FastAPI, HTTPException
@@ -116,7 +112,7 @@ class CameraSettings(BaseModel):
     port: int = 554
     username: str
     password: str = ''
-    stream_path: str = '/cam/realmonitor?channel=1&subtype=0'
+    stream_path: str = '/live'
     line_x: float = 0.5
     entry_direction: str = 'left_to_right'
 
@@ -143,8 +139,8 @@ def validated_settings(settings, old=None):
     if not settings['password']:
         raise HTTPException(400, 'Informe a senha da câmera.')
     path = settings['stream_path'].strip()
-    if not path.startswith('/') or '#' in path or '@' in path or ' ' in path or any(ord(c) < 32 for c in path):
-        raise HTTPException(400, 'O caminho RTSP deve começar com / e não conter espaços, @ ou #.')
+    if not path.startswith('/') or '?' in path or '#' in path or any(ord(c) < 32 for c in path):
+        raise HTTPException(400, 'O caminho RTSP deve começar com / e não conter ? ou #.')
     settings['host'], settings['stream_path'] = host, path
     return settings
 
@@ -165,7 +161,7 @@ def camera_settings():
     current = saved_settings()
     if not current:
         return {'configured': False, 'host': '', 'port': 554, 'username': '',
-                'stream_path': '/cam/realmonitor?channel=1&subtype=0', 'line_x': .5, 'entry_direction': 'left_to_right'}
+                'stream_path': '/live', 'line_x': .5, 'entry_direction': 'left_to_right'}
     return {key:value for key,value in current.items() if key != 'password'} | {'configured': True}
 
 
