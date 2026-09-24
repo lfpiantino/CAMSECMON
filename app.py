@@ -10,6 +10,10 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote
 
+# A câmera Mibo aceita RTSP sobre TCP; o OpenCV/FFmpeg usa esta opção ao abrir
+# cada captura. Uma configuração explícita do usuário continua tendo prioridade.
+os.environ.setdefault('OPENCV_FFMPEG_CAPTURE_OPTIONS', 'rtsp_transport;tcp')
+
 import cv2
 import numpy as np
 from fastapi import FastAPI, HTTPException
